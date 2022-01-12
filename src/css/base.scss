@@ -1,6 +1,56 @@
 /* This is an example of how to import a partial scss file*/
-@import '_variables';
+@import "_variables";
+@import "_mixins";
 
+html {
+  height: 100%;
+}
+nav {
+  @include flex(row, nowrap, normal, flex-end, normal);
+  background: $nav-background;
+  padding: 10px;
+}
 body {
-  background: $primary-background;
+  height: 100%;
+}
+
+main {
+  @include flex(column, nowrap, normal, center, normal);
+  height: 100%;
+}
+h2 {
+  margin: 0px;
+  padding: 10px;
+}
+
+.book-your-stay-section {
+  @include flex(column, nowrap, normal, normal, center);
+  border: lightblue 2px dashed;
+}
+
+#quantity {
+  width: 30px;
+}
+
+.bookings {
+  background: $background;
+}
+
+article {
+  border: 2px black dashed;
+}
+
+.booking-details {
+  @include flex(row, nowrap, normal, space-evenly, center);
+  border: lightgray 2px dashed;
+}
+
+.room-details {
+  @include flex(row, nowrap, normal, space-evenly, normal);
+}
+
+.room-card {
+  @include flex(column, nowrap, center, center, center);
+  border: black 2px solid;
+  padding: 10px;
 }
