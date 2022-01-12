@@ -6,12 +6,13 @@ html {
   height: 100%;
 }
 nav {
-  @include flex(row, nowrap, normal, flex-end, normal);
+  @include flex(row, nowrap, normal, space-between, normal);
   background: $nav-background;
   padding: 10px;
 }
 body {
   height: 100%;
+  margin: 0;
 }
 
 main {
