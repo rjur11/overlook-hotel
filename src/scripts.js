@@ -5,8 +5,12 @@ import domUpdates from "./domUpdates.js";
 import "./css/base.scss";
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import "./images/turing-logo.png";
-import "./images/hotel-room.jpg";
+import "./images/nav-bar-bg.jpg";
+import "./images/bg.jpg";
+import "./images/single-room.jpg";
+import "./images/suite.jpg";
+import "./images/jr-suite.jpg";
+import "./images/residential-suite.jpg";
 import "./images/transparent-logo.png";
 
 console.log("This is the JavaScript entry file - your code begins here.");
