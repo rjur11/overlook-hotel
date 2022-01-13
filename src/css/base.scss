@@ -7,7 +7,7 @@ html {
 }
 nav {
   @include flex(row, nowrap, normal, space-between, normal);
-  background: $nav-background;
+  background: url(#{$nav-background});
   padding: 10px;
 }
 body {
@@ -16,7 +16,7 @@ body {
 }
 
 main {
-  @include flex(column, nowrap, normal, center, normal);
+  @include flex(column, nowrap, normal, space-around, normal);
   height: 100%;
 }
 h2 {
@@ -34,7 +34,7 @@ h2 {
 }
 
 .bookings {
-  background: $background;
+  background: url(#{$background});
 }
 
 article {
