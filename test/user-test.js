@@ -122,7 +122,7 @@ describe("User", () => {
   it("should should have a method that returns today's bookings", () => {
     expect(user2.getCurrentBookings()).to.deep.equal([booking4]);
   });
-  it.only("should should have a method that returns the total cost of all bookings", () => {
+  it("should should have a method that returns the total cost of all bookings", () => {
     expect(user2.getTotalAmount()).to.equal(65);
   });
 });
