@@ -1,4 +1,4 @@
-class Booking {
+export default class Booking {
   constructor(bookingData, rooms) {
     this.id = bookingData.id;
     this.userID = bookingData.userID;
@@ -10,5 +10,3 @@ class Booking {
     return this.room.costPerNight;
   }
 }
-
-module.exports = Booking;
