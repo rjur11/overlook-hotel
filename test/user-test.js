@@ -1,7 +1,7 @@
 import { expect } from "chai";
-const User = require("../src/classes/User.js");
-const Booking = require("../src/classes/Booking.js");
-const Room = require("../src/classes/Room.js");
+import User from "../src/classes/User.js";
+import Booking from "../src/classes/Booking.js";
+import Room from "../src/classes/Room.js";
 
 describe("User", () => {
   let user1;

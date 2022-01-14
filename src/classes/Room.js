@@ -1,4 +1,4 @@
-class Room {
+export default class Room {
   constructor(roomData) {
     this.number = roomData.number;
     this.roomType = roomData.roomType;
@@ -8,5 +8,3 @@ class Room {
     this.costPerNight = roomData.costPerNight;
   }
 }
-
-module.exports = Room;

@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import Room from "../src/classes/Room.js";
-const Booking = require("../src/classes/Booking.js");
+import Booking from "../src/classes/Booking.js";
 
 describe("Booking", () => {
   let booking1;
@@ -25,7 +25,6 @@ describe("Booking", () => {
       [room1]
     );
   });
-
   it("Should be a function", () => {
     expect(Booking).to.be.a("function");
   });

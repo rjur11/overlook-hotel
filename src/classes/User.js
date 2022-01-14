@@ -1,4 +1,4 @@
-class User {
+export default class User {
   constructor(userData, bookings = []) {
     this.id = userData.id;
     this.name = userData.name;
@@ -35,5 +35,3 @@ class User {
     }, 0);
   }
 }
-
-module.exports = User;

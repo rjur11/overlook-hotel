@@ -1,5 +1,5 @@
 import { expect } from "chai";
-const Room = require("../src/classes/Room.js");
+import Room from "../src/classes/Room.js";
 
 describe("Room", () => {
   let room1;
