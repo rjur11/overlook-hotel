@@ -1,12 +1,15 @@
 class User {
-  constructor(userData) {
+  constructor(userData, bookingsData = []) {
     this.id = userData.id;
     this.name = userData.name;
-    this.bookings = [];
+    this.bookings = bookingsData.filter(
+      (booking) => booking.userID === this.id
+    );
   }
-  getUserBookings(bookings) {
-    this.bookings = bookings.filter((booking) => booking.userId === this.id);
-  }
+
+  getPastBookings() {}
+  getCurrentBookings() {}
+  getFutureBookings() {}
 }
 
 module.exports = User;

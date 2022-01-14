@@ -7,6 +7,20 @@ describe("User", () => {
 
   beforeEach(() => {
     user1 = new User({ id: 1, name: "Leatha Ulrich" });
+    user2 = new User({ id: 2, name: "Bob Ross" }, [
+      {
+        id: "5fwrgu4i7k55hl6sz",
+        userID: 2,
+        date: "2022/04/22",
+        roomNumber: 15,
+      },
+      {
+        id: "5fwrgu4i7k55hl6t5",
+        userID: 43,
+        date: "2022/01/24",
+        roomNumber: 24,
+      },
+    ]);
   });
 
   it("Should be a function", () => {
@@ -23,5 +37,15 @@ describe("User", () => {
   });
   it("should start with 0 bookings if no data passed in", () => {
     expect(user1.bookings).to.deep.equal([]);
+  });
+  it("should start with bookings associated data", () => {
+    expect(user2.bookings).to.deep.equal([
+      {
+        id: "5fwrgu4i7k55hl6sz",
+        userID: 2,
+        date: "2022/04/22",
+        roomNumber: 15,
+      },
+    ]);
   });
 });
