@@ -4,6 +4,7 @@ const User = require("../src/classes/User.js");
 describe("User", () => {
   let user1;
   let user2;
+  let user3;
 
   beforeEach(() => {
     user1 = new User({ id: 1, name: "Leatha Ulrich" }, []);
@@ -31,6 +32,14 @@ describe("User", () => {
         userID: 2,
         date: "2022/01/14",
         roomNumber: 3,
+      },
+    ]);
+    user3 = new User({ id: 3, name: "Tony Chewick" }, [
+      {
+        id: "5fwrgu4i7k55hl6tg",
+        userID: 3,
+        date: "2022/02/03",
+        roomNumber: 17,
       },
     ]);
   });

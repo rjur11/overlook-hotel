@@ -1,3 +1,5 @@
+const Booking = require("./src/classes/Booking.js");
+
 class User {
   constructor(userData, bookingsData = []) {
     this.id = userData.id;
@@ -24,10 +26,14 @@ class User {
   getCurrentBookings() {
     const today = new Date(new Date().toDateString());
     let currentBookings = this.bookings.filter((booking) => {
-      return new Date(booking.date).toString() === today.toString();
+      return new Date(booking.date).getTime() === today.getTime();
     });
     return currentBookings;
   }
+  addToBookings(booking) {
+    this.bookings.push(booking);
+  }
+  getTotalAmount() {}
 }
 
 module.exports = User;
