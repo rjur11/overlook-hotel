@@ -6,7 +6,7 @@ describe("User", () => {
   let user2;
 
   beforeEach(() => {
-    user1 = new User({ id: 1, name: "Leatha Ulrich" });
+    user1 = new User({ id: 1, name: "Leatha Ulrich" }, []);
     user2 = new User({ id: 2, name: "Bob Ross" }, [
       {
         id: "5fwrgu4i7k55hl6sz",
@@ -19,6 +19,12 @@ describe("User", () => {
         userID: 43,
         date: "2022/01/24",
         roomNumber: 24,
+      },
+      {
+        id: "5fwrgu4i7k55hl6tS",
+        userID: 2,
+        date: "2022/01/08",
+        roomNumber: 12,
       },
     ]);
   });
@@ -45,6 +51,22 @@ describe("User", () => {
         userID: 2,
         date: "2022/04/22",
         roomNumber: 15,
+      },
+      {
+        id: "5fwrgu4i7k55hl6tS",
+        userID: 2,
+        date: "2022/01/08",
+        roomNumber: 12,
+      },
+    ]);
+  });
+  it("should should have a method that returns past bookings", () => {
+    expect(user2.getPastBookings()).to.deep.equal([
+      {
+        id: "5fwrgu4i7k55hl6tS",
+        userID: 2,
+        date: "2022/01/08",
+        roomNumber: 12,
       },
     ]);
   });
