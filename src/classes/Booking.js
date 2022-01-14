@@ -1,12 +1,13 @@
 class Booking {
-  constructor(bookingData) {
+  constructor(bookingData, rooms) {
     this.id = bookingData.id;
-    this.userId = bookingData.userId;
+    this.userID = bookingData.userID;
     this.date = bookingData.date;
     this.roomNumber = bookingData.roomNumber;
+    this.room = rooms.find((room) => room.number === this.roomNumber);
   }
-  findTotalRoomBookingsCost(rooms) {
-    //all rooms? one room?
+  getCost() {
+    return this.room.costPerNight;
   }
 }
 
