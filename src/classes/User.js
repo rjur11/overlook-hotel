@@ -1,12 +1,8 @@
-const Booking = require("./src/classes/Booking.js");
-
 class User {
-  constructor(userData, bookingsData = []) {
+  constructor(userData, bookings = []) {
     this.id = userData.id;
     this.name = userData.name;
-    this.bookings = bookingsData.filter(
-      (booking) => booking.userID === this.id
-    );
+    this.bookings = bookings.filter((booking) => booking.userID === this.id);
   }
 
   getPastBookings() {
@@ -33,7 +29,11 @@ class User {
   addToBookings(booking) {
     this.bookings.push(booking);
   }
-  getTotalAmount() {}
+  getTotalAmount() {
+    return this.bookings.reduce((acc, booking) => {
+      return (acc += booking.getCost());
+    }, 0);
+  }
 }
 
 module.exports = User;
