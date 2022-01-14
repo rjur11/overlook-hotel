@@ -26,6 +26,12 @@ describe("User", () => {
         date: "2022/01/08",
         roomNumber: 12,
       },
+      {
+        id: "5fwrgu4L2z55hl6tS",
+        userID: 2,
+        date: "2022/01/14",
+        roomNumber: 3,
+      },
     ]);
   });
 
@@ -58,6 +64,12 @@ describe("User", () => {
         date: "2022/01/08",
         roomNumber: 12,
       },
+      {
+        id: "5fwrgu4L2z55hl6tS",
+        userID: 2,
+        date: "2022/01/14",
+        roomNumber: 3,
+      },
     ]);
   });
   it("should should have a method that returns past bookings", () => {
@@ -77,6 +89,16 @@ describe("User", () => {
         userID: 2,
         date: "2022/04/22",
         roomNumber: 15,
+      },
+    ]);
+  });
+  it("should should have a method that returns today's bookings", () => {
+    expect(user2.getCurrentBookings()).to.deep.equal([
+      {
+        id: "5fwrgu4L2z55hl6tS",
+        userID: 2,
+        date: "2022/01/14",
+        roomNumber: 3,
       },
     ]);
   });
