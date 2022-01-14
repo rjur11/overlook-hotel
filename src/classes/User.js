@@ -17,9 +17,15 @@ class User {
     });
     return pastBookings;
   }
-
+  getFutureBookings() {
+    const today = Date.parse(new Date());
+    const futureBookings = this.bookings.filter((booking) => {
+      const bookingUnix = Date.parse(booking.date);
+      return Date.parse(booking.date) > today;
+    });
+    return futureBookings;
+  }
   // getCurrentBookings() {}
-  // getFutureBookings() {}
 }
 
 module.exports = User;

@@ -70,4 +70,14 @@ describe("User", () => {
       },
     ]);
   });
+  it("should should have a method that returns future bookings", () => {
+    expect(user2.getFutureBookings()).to.deep.equal([
+      {
+        id: "5fwrgu4i7k55hl6sz",
+        userID: 2,
+        date: "2022/04/22",
+        roomNumber: 15,
+      },
+    ]);
+  });
 });
