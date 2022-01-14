@@ -1,6 +1,6 @@
 const url = "http://localhost:3001/api/v1/";
 
-// GET REQUESTS
+// ~~~~~~~~~~ GET REQUESTS ~~~~~~~~~~~~~
 
 export const fetchCustomers = () => {
   return fetch(url + "customers")
@@ -26,7 +26,7 @@ export const fetchAllBookings = () => {
     .catch((error) => console.log(error));
 };
 
-// POST REQUEST
+// ~~~~~~~~~~ POST REQUEST ~~~~~~~~~~~~~
 
 export const addNewBooking = (userID, date, roomNumber) => {
   return fetch(url + "bookings", {
