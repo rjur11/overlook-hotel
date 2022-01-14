@@ -21,4 +21,7 @@ describe("User", () => {
   it("should have a name", () => {
     expect(user1.name).to.equal("Leatha Ulrich");
   });
+  it("should start with 0 bookings if no data passed in", () => {
+    expect(user1.bookings).to.deep.equal([]);
+  });
 });
