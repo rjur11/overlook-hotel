@@ -14,11 +14,29 @@
           src="images/transparent-logo.png"
           alt="Overlook Hotel logo"
         />
-        <button>Log In</button>
+        <button class="logout">Logout</button>
       </nav>
     </header>
     <main class="bookings">
-      <section class="book-your-stay-section">
+      <section class="login-view">
+        <div>
+          <label for="username">Username:</label>
+          <input type="text" id="username" name="username" />
+        </div>
+        <div>
+          <label for="pass">Password:</label>
+          <input
+            type="password"
+            id="pass"
+            name="password"
+            minlength="8"
+            required
+          />
+        </div>
+        <p class="login-error hidden"></p>
+        <button class="login-button">Sign In</button>
+      </section>
+      <section class="book-your-stay-section hidden">
         <h2>Book Your Stay!</h2>
         <form class="time-to-book">
           <label for="date">Select a date to book:</label>
@@ -37,7 +55,7 @@
           <button class="submit">Submit</button>
         </form>
       </section>
-      <section class="booking-details">
+      <section class="booking-details hidden">
         <article class="past-bookings">
           <p>PAST BOOKINGS</p>
           <table class="past-bookings-details"></table>
