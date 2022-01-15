@@ -4,6 +4,19 @@ const currentBookingsTable = document.querySelector(
 );
 const futureBookingsTable = document.querySelector(".future-bookings-details");
 
+const dateInput = document.querySelector("#date");
+const roomInput = document.querySelector(".rooms");
+const bookingsView = document.querySelector(".booking-details");
+const roomsView = document.querySelector(".room-details");
+const bookYourStaySection = document.querySelector(".book-your-stay-section");
+
+const renderBookings = (user) => {
+  populateBookingRows(pastBookingsTable, user.getPastBookings());
+  populateBookingRows(currentBookingsTable, user.getCurrentBookings());
+  populateBookingRows(futureBookingsTable, user.getFutureBookings());
+};
+// ~~~~~~~~~~~~~~~~~ TABLE CREATION ~~~~~~~~~~~~~~~~~~~~
+
 const createTr = (columns, columnType = "td") => {
   const tr = document.createElement("tr");
   columns.forEach((column) => {
@@ -47,11 +60,28 @@ const createCostRow = (bookings) => {
   return tr;
 };
 
+// ~~~~~~~~~~~~~~~~~ ROOM CREATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+const createRoomCard = () => {};
+
+// ~~~~~~~~~~~~~~~~~ DOM UPDATE FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
+
 const domUpdates = {
-  renderBookings(user) {
-    populateBookingRows(pastBookingsTable, user.getPastBookings());
-    populateBookingRows(currentBookingsTable, user.getCurrentBookings());
-    populateBookingRows(futureBookingsTable, user.getFutureBookings());
+  showRooms(event) {
+    event.preventDefault();
+    if (dateInput.value && roomInput) {
+    }
+  },
+  renderModel(model) {
+    if (model.state === "user") {
+      bookingsView.classList.remove("hidden");
+      bookYourStaySection.classList.remove("hidden");
+      roomsView.classList.add("hidden");
+      renderBookings(model.user);
+    } else if (model.state === "rooms") {
+      bookingsView.classList.add("hidden");
+      bookYourStaySection.classList.add("hidden");
+      roomsView.classList.remove("hidden");
+    }
   },
 };
 

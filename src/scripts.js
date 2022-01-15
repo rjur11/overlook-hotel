@@ -25,6 +25,8 @@ import "./images/jr-suite.jpg";
 import "./images/residential-suite.jpg";
 import "./images/transparent-logo.png";
 
+const submitButton = document.querySelector(".submit");
+
 window.addEventListener("load", () => {
   Promise.all([fetchCustomers(), fetchAllBookings(), fetchAllRooms()]).then(
     (data) => {
@@ -39,7 +41,36 @@ window.addEventListener("load", () => {
         Math.random() * customersData.customers.length
       );
       let user = new User(customersData.customers[randomUserIdx], bookings);
-      domUpdates.renderBookings(user);
+      const model = {
+        user: user,
+        bookings: bookings,
+        rooms: rooms,
+        state: "user",
+      };
+      domUpdates.renderModel(model);
     }
   );
 });
+
+submitButton.addEventListener("click", domUpdates.showRooms);
+
+const showRooms = (selectedBookingDate, selectedRoomType, model) => {
+  model.state = "rooms";
+  model.selectedBookingDate = selectedBookingDate;
+  model.selectedRoomType = selectedRoomType;
+  domUpdates.renderModel(model);
+};
+
+const bookRoom = (selectedRoom, model) => {
+  if (model.state !== "rooms") {
+    return;
+  }
+  model.state = "user";
+  const userID = model.user.id;
+  const date = model.selectedBookingDate;
+  const roomNumber = selectedRoom.number;
+  addNewBooking(userID, date, roomNumber).then((data) => {
+    console.log(data);
+    domUpdates.renderModel(model);
+  });
+};
