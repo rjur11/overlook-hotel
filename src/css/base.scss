@@ -5,8 +5,15 @@
 nav {
   @include flex(row, nowrap, normal, space-between, normal);
   background: url(#{$nav-background});
+  background-size: cover;
   padding: 10px;
 }
+.logo {
+  height: 50px;
+  width: auto;
+  background: rgba(238, 238, 238, 0.8);
+}
+
 body {
   @include flex(column, nowrap, normal, normal, normal);
   margin: 0;
@@ -37,10 +44,7 @@ h2 {
 
 .bookings {
   background: url(#{$background});
-}
-
-article {
-  // border: 2px black dashed;
+  background-size: cover;
 }
 
 .booking-details {
@@ -51,8 +55,12 @@ article {
 .past-bookings,
 .current-bookings,
 .upcoming-bookings {
+  p {
+    margin-top: 0;
+  }
   @include flex(column, nowrap, normal, normal, center);
-  width: 33%;
+  background: rgba(238, 238, 238, 0.8);
+  padding: 40px;
 }
 
 table {
