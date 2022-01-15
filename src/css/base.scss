@@ -33,6 +33,7 @@ h2 {
 .book-your-stay-section {
   @include flex(column, nowrap, normal, normal, center);
   border: lightblue 2px dashed;
+  padding-bottom: 20px;
 }
 
 // #quantity
@@ -47,7 +48,8 @@ h2 {
   background-size: cover;
 }
 
-.booking-details {
+.booking-details,
+.room-details {
   @include flex(row, nowrap, normal, space-evenly, baseline);
   border: lightgray 2px dashed;
 }

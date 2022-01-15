@@ -21,7 +21,7 @@ import "./images/nav-bar-bg.jpg";
 import "./images/bg.jpg";
 import "./images/single-room.jpg";
 import "./images/suite.jpg";
-import "./images/jr-suite.jpg";
+import "./images/junior-suite.jpg";
 import "./images/residential-suite.jpg";
 import "./images/transparent-logo.png";
 
@@ -39,7 +39,39 @@ window.addEventListener("load", () => {
         Math.random() * customersData.customers.length
       );
       let user = new User(customersData.customers[randomUserIdx], bookings);
-      domUpdates.renderBookings(user);
+      const model = {
+        user: user,
+        bookings: bookings,
+        rooms: rooms,
+        state: "user",
+      };
+      domUpdates.showRooms = (selectedBookingDate, selectedRoomType) => {
+        console.log("Showrooms was called");
+        model.state = "rooms";
+        model.selectedBookingDate = selectedBookingDate;
+        model.selectedRoomType = selectedRoomType;
+        domUpdates.renderModel(model);
+      };
+      domUpdates.bookRoom = (selectedRoom) => {
+        if (model.state !== "rooms") {
+          return;
+        }
+        model.state = "user";
+        const userID = model.user.id;
+        const date = model.selectedBookingDate;
+        const roomNumber = selectedRoom.number;
+        addNewBooking(userID, date, roomNumber).then((data) => {
+          const newBooking = new Booking(data.newBooking, model.rooms);
+          model.bookings.push(newBooking);
+          model.user.bookings.push(newBooking);
+          domUpdates.renderModel(model);
+        });
+      };
+      domUpdates.returnHome = () => {
+        model.state = "user";
+        domUpdates.renderModel(model);
+      };
+      domUpdates.renderModel(model);
     }
   );
 });
