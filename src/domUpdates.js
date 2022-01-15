@@ -3,12 +3,12 @@ const currentBookingsTable = document.querySelector(
   ".current-bookings-details"
 );
 const futureBookingsTable = document.querySelector(".future-bookings-details");
-
 const dateInput = document.querySelector("#date");
-const roomInput = document.querySelector(".rooms");
+const roomInput = document.querySelector(".rooms-selection");
 const bookingsView = document.querySelector(".booking-details");
 const roomsView = document.querySelector(".room-details");
 const bookYourStaySection = document.querySelector(".book-your-stay-section");
+const submitButton = document.querySelector(".submit");
 
 const renderBookings = (user) => {
   populateBookingRows(pastBookingsTable, user.getPastBookings());
@@ -61,15 +61,86 @@ const createCostRow = (bookings) => {
 };
 
 // ~~~~~~~~~~~~~~~~~ ROOM CREATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const createRoomCard = () => {};
+const typeToImage = (type) => {
+  return (
+    "images/" +
+    type
+      .split("")
+      .map((c) => (c === " " ? "-" : c))
+      .join("") +
+    ".jpg"
+  );
+};
 
+const createRoomDetails = (details) => {
+  const ul = document.createElement("ul");
+  details.forEach((detail) => {
+    const li = document.createElement("li");
+    li.innerText = `${detail[0]}: ${detail[1]}`;
+    ul.appendChild(li);
+  });
+  return ul;
+};
+const createRoomCard = (room) => {
+  const div = document.createElement("div");
+  div.classList.add("room-card");
+  const img = document.createElement("img");
+  img.src = typeToImage(room.roomType);
+  img.alt = `Image of ${room.roomType}`;
+  img.width = 100;
+  div.appendChild(img);
+  div.appendChild(
+    createRoomDetails([
+      ["Room Number", room.number],
+      ["Bidet", room.bidet],
+      ["Bed Size", room.bedSize],
+      ["Number of Beds", room.numBeds],
+      ["Cost per Night", `$${room.costPerNight.toFixed(2)}`],
+    ])
+  );
+  const button = document.createElement("button");
+  button.innerText = "Book this Room";
+  div.appendChild(button);
+  return div;
+};
+
+const showRoomsListener = (event) => {
+  console.log("clicked");
+  event.preventDefault();
+  console.log(dateInput.value, roomInput.value);
+  if (dateInput.value && roomInput.value) {
+    domUpdates.showRooms(dateInput.value, roomInput.value);
+  }
+};
+
+const renderRooms = (model) => {
+  const selectedDate = model.selectedBookingDate;
+  const selectedRoomType = model.selectedRoomType;
+  const user = model.user;
+  const bookings = model.bookings;
+  const rooms = model.rooms;
+  console.log(rooms);
+  rooms
+    .filter((room) => {
+      const isCorrectType = room.roomType === selectedRoomType;
+      const isAvailable = !bookings.some(
+        (booking) =>
+          booking.roomNumber === room.number && booking.date === selectedDate
+      );
+      console.log(room, isCorrectType, isAvailable);
+      return isCorrectType && isAvailable;
+    })
+    .map(createRoomCard)
+    .forEach((card) => roomsView.appendChild(card));
+};
 // ~~~~~~~~~~~~~~~~~ DOM UPDATE FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
 
 const domUpdates = {
-  showRooms(event) {
-    event.preventDefault();
-    if (dateInput.value && roomInput) {
-    }
+  showRooms(selectedBookingDate, selectedRoomType) {
+    console.log("Did not define showRooms");
+  },
+  bookRoom(selectedRoom) {
+    console.log("Did not define bookRoom");
   },
   renderModel(model) {
     if (model.state === "user") {
@@ -81,8 +152,11 @@ const domUpdates = {
       bookingsView.classList.add("hidden");
       bookYourStaySection.classList.add("hidden");
       roomsView.classList.remove("hidden");
+      renderRooms(model);
     }
   },
 };
+
+submitButton.addEventListener("click", showRoomsListener);
 
 export default domUpdates;

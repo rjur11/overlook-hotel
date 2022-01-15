@@ -23,11 +23,12 @@
         <form class="time-to-book">
           <label for="date">Select a date to book:</label>
           <input type="date" id="date" name="date" />
+
           <!-- <label for="quantity">Select number of nights:</label>
           <input type="number" id="quantity" name="quantity" min="1" /> -->
 
           <label for="rooms" class="rooms">Choose a Room type: </label>
-          <select name="rooms">
+          <select name="rooms" class="rooms-selection">
             <option value="single room">Single Room</option>
             <option value="suite">Suite</option>
             <option value="junior suite">Jr. Suite</option>
@@ -50,22 +51,7 @@
           <table class="future-bookings-details"></table>
         </article>
       </section>
-      <section class="room-details hidden">
-        <div class="room-card">
-          <image>TBD</image>
-          <div class="room-details">
-            <li>
-              <ol>
-                Detail 1
-              </ol>
-              <ol>
-                Detail 2
-              </ol>
-            </li>
-          </div>
-          <button>Book this Room</button>
-        </div>
-      </section>
+      <section class="room-details hidden"></section>
     </main>
 
     <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
