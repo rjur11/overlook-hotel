@@ -25,6 +25,8 @@ import "./images/junior-suite.jpg";
 import "./images/residential-suite.jpg";
 import "./images/transparent-logo.png";
 
+const validPassword = "overlook2021";
+
 window.addEventListener("load", () => {
   Promise.all([fetchAllBookings(), fetchAllRooms()]).then((data) => {
     let bookingsData = data[0];
@@ -42,6 +44,21 @@ window.addEventListener("load", () => {
       if (model.state !== "login") {
         return;
       }
+      if (username === "manager") {
+        if (password !== validPassword) {
+          model.loginError = "Invalid password";
+          domUpdates.renderModel(model);
+          return;
+        }
+        model.state = "manager";
+        fetchCustomers().then((data) => {
+          model.users = data.customers.map(
+            (customer) => new User(customer, bookings)
+          );
+          domUpdates.renderModel(model);
+        });
+        return;
+      }
       if (!username.startsWith("customer")) {
         // Staying on login screen
         model.loginError = "Invalid username";
@@ -55,7 +72,7 @@ window.addEventListener("load", () => {
         return;
       }
       const id = parseInt(idComp);
-      if (password !== "overlook2021") {
+      if (password !== validPassword) {
         model.loginError = "Invalid password";
         domUpdates.renderModel(model);
         return;

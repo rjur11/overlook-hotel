@@ -17,19 +17,38 @@ const bookingsView = document.querySelector(".booking-details");
 const roomsView = document.querySelector(".room-details");
 const bookYourStaySection = document.querySelector(".book-your-stay-section");
 const submitButton = document.querySelector(".submit");
+const managerDashBoard = document.querySelector(".manager-dashboard");
+const totalRoomsAvailable = document.querySelector(".total-rooms-available");
+const totalRevenue = document.querySelector(".total-daily-revenue");
+const percentOccupied = document.querySelector(".percentage-occupied");
+
+// ~~~~~~~~~~~~~~~~~ HELPER FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
+
+const roomIsAvailable = (room, date, bookings) => {
+  return !bookings.some(
+    (booking) => booking.roomNumber === room.number && booking.date === date
+  );
+};
+
+const costToString = (cost) => {
+  return `$${cost.toFixed(2)}`;
+};
+
+// ~~~~~~~~~~~~~~~~~ BOOKING TABLES ~~~~~~~~~~~~~~~~~~~~
 
 const renderBookings = (user) => {
   populateBookingRows(pastBookingsTable, user.getPastBookings());
   populateBookingRows(currentBookingsTable, user.getCurrentBookings());
   populateBookingRows(futureBookingsTable, user.getFutureBookings());
 };
-// ~~~~~~~~~~~~~~~~~ TABLE CREATION ~~~~~~~~~~~~~~~~~~~~
+
 const createDisplayRoomType = (type) => {
   return type
     .split(" ")
     .map((word) => word[0].toUpperCase() + word.slice(1))
     .join(" ");
 };
+
 const createTr = (columns, columnType = "td") => {
   const tr = document.createElement("tr");
   columns.forEach((column) => {
@@ -45,9 +64,10 @@ const createBookingRow = (booking) => {
     booking.date,
     booking.roomNumber,
     createDisplayRoomType(booking.room.roomType),
-    `$${booking.getCost().toFixed(2)}`,
+    costToString(booking.getCost()),
   ]);
 };
+
 const populateBookingRows = (table, bookings) => {
   table.innerHTML = "";
   const thead = document.createElement("thead");
@@ -73,12 +93,13 @@ const createCostRow = (bookings) => {
   labelTd.innerText = "Total Cost";
   tr.appendChild(labelTd);
   const costTd = document.createElement("td");
-  costTd.innerText = `$${cost.toFixed(2)}`;
+  costTd.innerText = costToString(cost);
   tr.appendChild(costTd);
   return tr;
 };
 
 // ~~~~~~~~~~~~~~~~~ ROOM CREATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 const typeToImage = (type) => {
   return "images/" + type.split(" ").join("-") + ".jpg";
 };
@@ -92,6 +113,7 @@ const createRoomDetails = (details) => {
   });
   return ul;
 };
+
 const createRoomCard = (room) => {
   const div = document.createElement("div");
   div.classList.add("room-card");
@@ -106,7 +128,7 @@ const createRoomCard = (room) => {
       [room.bidet ? "Able to wash your tush" : "Unable to wash your tush"],
       ["Bed Size", room.bedSize],
       ["Number of Beds", room.numBeds],
-      ["Cost per Night", `$${room.costPerNight.toFixed(2)}`],
+      ["Cost per Night", costToString(room.costPerNight)],
     ])
   );
   const button = document.createElement("button");
@@ -121,6 +143,7 @@ const createRoomCard = (room) => {
 const convertDate = (date) => {
   return date.split("-").join("/");
 };
+
 const showRoomsListener = (event) => {
   console.log("clicked");
   event.preventDefault();
@@ -138,11 +161,7 @@ const renderRooms = (model) => {
   roomsView.innerHTML = "";
   const availableRooms = rooms.filter((room) => {
     const isCorrectType = room.roomType === selectedRoomType;
-    const isAvailable = !bookings.some(
-      (booking) =>
-        booking.roomNumber === room.number && booking.date === selectedDate
-    );
-    console.log(room, isCorrectType, isAvailable);
+    const isAvailable = roomIsAvailable(room, selectedDate, bookings);
     return isCorrectType && isAvailable;
   });
   if (availableRooms.length === 0) {
@@ -174,6 +193,7 @@ const loginListener = (event) => {
     domUpdates.login(userName, password);
   }
 };
+
 loginButton.addEventListener("click", loginListener);
 
 // ~~~~~~~~~~~~~~~~~ LOGOUT ~~~~~~~~~~~~~~~~~~~~
@@ -182,9 +202,64 @@ const logoutListener = (event) => {
   event.preventDefault();
   domUpdates.logout();
 };
+
 logoutButton.addEventListener("click", logoutListener);
 
+// ~~~~~~~~~~~~~~~~~ MANAGER DASHBOARD ~~~~~~~~~~~~~~~~~~~~
+
+const findTodaysDate = () => {
+  const today = new Date();
+  const result = `${today.getFullYear()}/${`${today.getMonth() + 1}`.padStart(
+    2,
+    "0"
+  )}/${today.getDate()}`;
+  return result;
+};
+
+const calculateRoomsAvailable = (model) => {
+  return model.rooms.filter((room) => {
+    return roomIsAvailable(room, findTodaysDate(), model.bookings);
+  }).length;
+};
+
+const calculateRoomRevenue = (model) => {
+  return model.bookings
+    .filter((booking) => {
+      return booking.date === findTodaysDate();
+    })
+    .map((booking) => booking.getCost())
+    .reduce((acc, cost) => acc + cost, 0);
+};
+
+const calculatePercentageOccupied = (model) => {
+  return 100 - (calculateRoomsAvailable(model) / model.rooms.length) * 100;
+};
+
+const renderManagerDashboard = (model) => {
+  totalRoomsAvailable.innerText = calculateRoomsAvailable(model);
+  totalRevenue.innerText = costToString(calculateRoomRevenue(model));
+  percentOccupied.innerText = `${calculatePercentageOccupied(model)}%`;
+};
+
 // ~~~~~~~~~~~~~~~~~ DOM UPDATE FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
+
+const viewsForState = {
+  login: [loginView],
+  user: [bookingsView, bookYourStaySection],
+  rooms: [roomsView],
+  manager: [managerDashBoard],
+};
+
+const showState = (state) => {
+  viewsForState[state].forEach((view) => view.classList.remove("hidden"));
+  Object.values(viewsForState).forEach((views) => {
+    views.forEach((view) => {
+      if (!viewsForState[state].includes(view)) {
+        view.classList.add("hidden");
+      }
+    });
+  });
+};
 
 const domUpdates = {
   login(username, password) {
@@ -203,28 +278,18 @@ const domUpdates = {
     console.log("Did not define returnHome");
   },
   renderModel(model) {
+    showState(model.state);
     if (model.state === "login") {
-      loginView.classList.remove("hidden");
-      bookingsView.classList.add("hidden");
-      bookYourStaySection.classList.add("hidden");
-      roomsView.classList.add("hidden");
       if (model.loginError) {
         loginError.classList.remove("hidden");
         loginError.innerText = model.loginError;
       }
-    }
-    if (model.state === "user") {
-      loginView.classList.add("hidden");
-      bookingsView.classList.remove("hidden");
-      bookYourStaySection.classList.remove("hidden");
-      roomsView.classList.add("hidden");
+    } else if (model.state === "user") {
       renderBookings(model.user);
     } else if (model.state === "rooms") {
-      loginView.classList.add("hidden");
-      bookingsView.classList.add("hidden");
-      bookYourStaySection.classList.add("hidden");
-      roomsView.classList.remove("hidden");
       renderRooms(model);
+    } else if (model.state === "manager") {
+      renderManagerDashboard(model);
     }
   },
 };
