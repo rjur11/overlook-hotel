@@ -4,7 +4,7 @@ const futureBookingsUl = document.querySelector(".future-bookings-details");
 
 const createBookingCard = (booking) => {
   const li = document.createElement("li");
-  li.innerText = `${booking.date} : ${booking.roomNumber}`;
+  li.innerText = `Date Booked: ${booking.date} : Room Number: ${booking.roomNumber}`;
   return li;
 };
 const addBookingsCardsToUl = (ul, bookings) => {

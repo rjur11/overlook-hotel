@@ -49,6 +49,17 @@ article {
   border: lightgray 2px dashed;
 }
 
+.past-bookings,
+.current-bookings,
+.upcoming-bookings {
+  @include flex(column, nowrap, normal, normal, center);
+  width: 33%;
+}
+
+ul {
+  list-style-type: none;
+}
+
 .room-details {
   @include flex(row, nowrap, normal, space-evenly, normal);
 }
