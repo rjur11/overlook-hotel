@@ -9,9 +9,14 @@ export const fetchCustomers = () => {
 };
 
 export const fetchSingleCustomer = (id) => {
-  return fetch(url + `customers/${id}`)
-    .then((response) => response.json())
-    .catch((error) => console.log(error));
+  return fetch(url + `customers/${id}`).then((response) => {
+    if (!response.ok) {
+      const error = new Error("Error response");
+      error.response = response;
+      throw error;
+    }
+    return response.json();
+  });
 };
 
 export const fetchAllRooms = () => {

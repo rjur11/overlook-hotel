@@ -1,7 +1,15 @@
+import { use } from "chai";
+
 const pastBookingsTable = document.querySelector(".past-bookings-details");
 const currentBookingsTable = document.querySelector(
   ".current-bookings-details"
 );
+const loginView = document.querySelector(".login-view");
+const logoutButton = document.querySelector(".logout");
+const userNameInput = document.querySelector("#username");
+const passwordInput = document.querySelector("#pass");
+const loginButton = document.querySelector(".login-button");
+const loginError = document.querySelector(".login-error");
 const futureBookingsTable = document.querySelector(".future-bookings-details");
 const dateInput = document.querySelector("#date");
 const roomInput = document.querySelector(".rooms-selection");
@@ -153,9 +161,38 @@ const renderRooms = (model) => {
       .forEach((card) => roomsView.appendChild(card));
   }
 };
+
+// ~~~~~~~~~~~~~~~~~ LOGIN ~~~~~~~~~~~~~~~~~~~~
+
+const loginListener = (event) => {
+  event.preventDefault();
+  if (userNameInput.value && passwordInput.value) {
+    const userName = userNameInput.value;
+    const password = passwordInput.value;
+    userNameInput.value = "";
+    passwordInput.value = "";
+    domUpdates.login(userName, password);
+  }
+};
+loginButton.addEventListener("click", loginListener);
+
+// ~~~~~~~~~~~~~~~~~ LOGOUT ~~~~~~~~~~~~~~~~~~~~
+
+const logoutListener = (event) => {
+  event.preventDefault();
+  domUpdates.logout();
+};
+logoutButton.addEventListener("click", logoutListener);
+
 // ~~~~~~~~~~~~~~~~~ DOM UPDATE FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
 
 const domUpdates = {
+  login(username, password) {
+    console.log("Did not define login");
+  },
+  logout() {
+    console.log("Did not define logout");
+  },
   showRooms(selectedBookingDate, selectedRoomType) {
     console.log("Did not define showRooms");
   },
@@ -166,12 +203,24 @@ const domUpdates = {
     console.log("Did not define returnHome");
   },
   renderModel(model) {
+    if (model.state === "login") {
+      loginView.classList.remove("hidden");
+      bookingsView.classList.add("hidden");
+      bookYourStaySection.classList.add("hidden");
+      roomsView.classList.add("hidden");
+      if (model.loginError) {
+        loginError.classList.remove("hidden");
+        loginError.innerText = model.loginError;
+      }
+    }
     if (model.state === "user") {
+      loginView.classList.add("hidden");
       bookingsView.classList.remove("hidden");
       bookYourStaySection.classList.remove("hidden");
       roomsView.classList.add("hidden");
       renderBookings(model.user);
     } else if (model.state === "rooms") {
+      loginView.classList.add("hidden");
       bookingsView.classList.add("hidden");
       bookYourStaySection.classList.add("hidden");
       roomsView.classList.remove("hidden");
