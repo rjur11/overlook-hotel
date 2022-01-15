@@ -41,11 +41,7 @@ window.addEventListener("load", () => {
         Math.random() * customersData.customers.length
       );
       let user = new User(customersData.customers[randomUserIdx], bookings);
-      domUpdates.renderBookings(
-        user.getPastBookings(),
-        user.getCurrentBookings(),
-        user.getFutureBookings()
-      );
+      domUpdates.renderBookings(user);
     }
   );
 });
