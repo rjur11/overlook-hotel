@@ -2,22 +2,21 @@
 @import "_variables";
 @import "_mixins";
 
-html {
-  height: 100%;
-}
 nav {
   @include flex(row, nowrap, normal, space-between, normal);
   background: url(#{$nav-background});
   padding: 10px;
 }
 body {
-  height: 100%;
+  @include flex(column, nowrap, normal, normal, normal);
   margin: 0;
+  min-height: 100vh;
 }
 
 main {
   @include flex(column, nowrap, normal, space-around, normal);
   height: 100%;
+  flex: 1;
 }
 h2 {
   margin: 0px;
@@ -41,7 +40,7 @@ h2 {
 }
 
 article {
-  border: 2px black dashed;
+  // border: 2px black dashed;
 }
 
 .booking-details {
@@ -79,5 +78,5 @@ td {
 }
 
 .hidden {
-  visibility: hidden;
+  display: none;
 }
