@@ -216,10 +216,42 @@ const findTodaysDate = () => {
   return result;
 };
 
+const renderAvailableRooms = (availableRoomsObj) => {
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const header = createTr(["Room Type", "Number Available"], "th");
+  thead.appendChild(header);
+  table.appendChild(thead);
+  const tbody = document.createElement("tbody");
+  Object.keys(availableRoomsObj).forEach((key) => {
+    if (key !== "total") {
+      const tr = createTr([createDisplayRoomType(key), availableRoomsObj[key]]);
+      tbody.appendChild(tr);
+    }
+  });
+  const tr = createTr(["Total", availableRoomsObj.total]);
+  tbody.appendChild(tr);
+  table.appendChild(tbody);
+  totalRoomsAvailable.appendChild(table);
+};
+
 const calculateRoomsAvailable = (model) => {
-  return model.rooms.filter((room) => {
-    return roomIsAvailable(room, findTodaysDate(), model.bookings);
-  }).length;
+  return model.rooms
+    .filter((room) => {
+      return roomIsAvailable(room, findTodaysDate(), model.bookings);
+    })
+    .reduce(
+      (acc, room) => {
+        if (!acc[room.roomType]) {
+          acc[room.roomType] = 1;
+        } else {
+          acc[room.roomType] += 1;
+        }
+        acc.total += 1;
+        return acc;
+      },
+      { total: 0 }
+    );
 };
 
 const calculateRoomRevenue = (model) => {
@@ -232,11 +264,13 @@ const calculateRoomRevenue = (model) => {
 };
 
 const calculatePercentageOccupied = (model) => {
-  return 100 - (calculateRoomsAvailable(model) / model.rooms.length) * 100;
+  return (
+    100 - (calculateRoomsAvailable(model).total / model.rooms.length) * 100
+  );
 };
 
 const renderManagerDashboard = (model) => {
-  totalRoomsAvailable.innerText = calculateRoomsAvailable(model);
+  renderAvailableRooms(calculateRoomsAvailable(model));
   totalRevenue.innerText = costToString(calculateRoomRevenue(model));
   percentOccupied.innerText = `${calculatePercentageOccupied(model)}%`;
 };
