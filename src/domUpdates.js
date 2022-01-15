@@ -72,14 +72,7 @@ const createCostRow = (bookings) => {
 
 // ~~~~~~~~~~~~~~~~~ ROOM CREATION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const typeToImage = (type) => {
-  return (
-    "images/" +
-    type
-      .split("")
-      .map((c) => (c === " " ? "-" : c))
-      .join("") +
-    ".jpg"
-  );
+  return "images/" + type.split(" ").join("-") + ".jpg";
 };
 
 const createRoomDetails = (details) => {
