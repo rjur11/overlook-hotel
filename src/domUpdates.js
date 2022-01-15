@@ -18,6 +18,7 @@ const createBookingRow = (booking) => {
   return tr;
 };
 const populateBookingRows = (table, bookings) => {
+  const thead = document.createElement("thead");
   const header = document.createElement("tr");
   const dateTh = document.createElement("th");
   dateTh.innerText = "Date Booked";
@@ -28,13 +29,17 @@ const populateBookingRows = (table, bookings) => {
   const costTh = document.createElement("th");
   costTh.innerText = "Cost of Room";
   header.appendChild(costTh);
-  table.appendChild(header);
+  thead.appendChild(header);
+  table.appendChild(thead);
+  const tbody = document.createElement("tbody");
   bookings.map(createBookingRow).forEach((row) => {
-    table.appendChild(row);
+    tbody.appendChild(row);
   });
+  tbody.appendChild(createCostRow(bookings));
+  table.appendChild(tbody);
 };
 
-const createCostRow = (table, bookings) => {
+const createCostRow = (bookings) => {
   const tr = document.createElement("tr");
   const cost = bookings.reduce((acc, booking) => acc + booking.getCost(), 0);
   const labelTd = document.createElement("td");
@@ -44,13 +49,12 @@ const createCostRow = (table, bookings) => {
   const costTd = document.createElement("td");
   costTd.innerText = `$${cost.toFixed(2)}`;
   tr.appendChild(costTd);
-  table.appendChild(tr);
+  return tr;
 };
 
 const domUpdates = {
   renderBookings(user) {
     populateBookingRows(pastBookingsTable, user.getPastBookings());
-    createCostRow(pastBookingsTable, user.getPastBookings());
     populateBookingRows(currentBookingsTable, user.getCurrentBookings());
     populateBookingRows(futureBookingsTable, user.getFutureBookings());
   },
