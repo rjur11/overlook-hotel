@@ -61,9 +61,15 @@ window.addEventListener("load", () => {
         const date = model.selectedBookingDate;
         const roomNumber = selectedRoom.number;
         addNewBooking(userID, date, roomNumber).then((data) => {
-          console.log(data);
+          const newBooking = new Booking(data.newBooking, model.rooms);
+          model.bookings.push(newBooking);
+          model.user.bookings.push(newBooking);
           domUpdates.renderModel(model);
         });
+      };
+      domUpdates.returnHome = () => {
+        model.state = "user";
+        domUpdates.renderModel(model);
       };
       domUpdates.renderModel(model);
     }
