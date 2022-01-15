@@ -4,31 +4,26 @@ const currentBookingsTable = document.querySelector(
 );
 const futureBookingsTable = document.querySelector(".future-bookings-details");
 
-const createBookingRow = (booking) => {
+const createTr = (columns, columnType = "td") => {
   const tr = document.createElement("tr");
-  const dateTd = document.createElement("td");
-  dateTd.innerText = booking.date;
-  tr.appendChild(dateTd);
-  const roomTd = document.createElement("td");
-  roomTd.innerText = booking.roomNumber;
-  tr.appendChild(roomTd);
-  const costTd = document.createElement("td");
-  costTd.innerText = `$${booking.getCost().toFixed(2)}`;
-  tr.appendChild(costTd);
+  columns.forEach((column) => {
+    const td = document.createElement(columnType);
+    td.innerText = column;
+    tr.appendChild(td);
+  });
   return tr;
+};
+
+const createBookingRow = (booking) => {
+  return createTr([
+    booking.date,
+    booking.roomNumber,
+    `$${booking.getCost().toFixed(2)}`,
+  ]);
 };
 const populateBookingRows = (table, bookings) => {
   const thead = document.createElement("thead");
-  const header = document.createElement("tr");
-  const dateTh = document.createElement("th");
-  dateTh.innerText = "Date Booked";
-  header.appendChild(dateTh);
-  const roomTh = document.createElement("th");
-  roomTh.innerText = "Room Number";
-  header.appendChild(roomTh);
-  const costTh = document.createElement("th");
-  costTh.innerText = "Cost of Room";
-  header.appendChild(costTh);
+  const header = createTr(["Date Booked", "Room Number", "Cost of Room"], "th");
   thead.appendChild(header);
   table.appendChild(thead);
   const tbody = document.createElement("tbody");

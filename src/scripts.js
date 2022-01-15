@@ -25,8 +25,6 @@ import "./images/jr-suite.jpg";
 import "./images/residential-suite.jpg";
 import "./images/transparent-logo.png";
 
-console.log("This is the JavaScript entry file - your code begins here.");
-
 window.addEventListener("load", () => {
   Promise.all([fetchCustomers(), fetchAllBookings(), fetchAllRooms()]).then(
     (data) => {
