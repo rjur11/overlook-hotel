@@ -19,11 +19,12 @@
     </header>
     <main class="bookings">
       <section class="login-view">
-        <div>
+        <h2>Please Log In!</h2>
+        <div class="login-user-element">
           <label for="username">Username:</label>
           <input type="text" id="username" name="username" />
         </div>
-        <div>
+        <div class="login-password-element">
           <label for="pass">Password:</label>
           <input
             type="password"
@@ -37,9 +38,24 @@
         <button class="login-button">Sign In</button>
       </section>
       <section class="manager-dashboard hidden">
-        <div class="total-rooms-available"></div>
-        <div class="total-daily-revenue"></div>
-        <div class="percentage-occupied"></div>
+        <div class="user-dropdown">
+          <label for="users"> Select a Customer to View Their Bookings:</label>
+          <select name="users" class="user-selection"></select>
+        </div>
+        <div class="manager-dash-tiles">
+          <div class="manager-dash-tile">
+            <h3>Available Rooms:</h3>
+            <div class="total-rooms-available"></div>
+          </div>
+          <div class="manager-dash-tile">
+            <h3>Today's Revenue:</h3>
+            <div class="total-daily-revenue"></div>
+          </div>
+          <div class="manager-dash-tile">
+            <h3>Percentage of Rooms Occupied Today:</h3>
+            <div class="percentage-occupied"></div>
+          </div>
+        </div>
       </section>
       <section class="book-your-stay-section hidden">
         <h2>Book Your Stay!</h2>
