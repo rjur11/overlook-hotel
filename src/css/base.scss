@@ -116,11 +116,15 @@ td {
   padding: 10px;
 }
 
-.hidden {
-  display: none;
+.manager-booking-view {
+  @include flex(row, nowrap, normal, normal, normal);
 }
 
-.manager-booking-view {
+.manager-customer-booked-section {
   max-height: 80vh;
   overflow-y: scroll;
+}
+
+.hidden {
+  display: none;
 }

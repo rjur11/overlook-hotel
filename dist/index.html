@@ -57,18 +57,37 @@
           </div>
         </div>
         <div class="manager-booking-view hidden">
-          <article class="past-customer-bookings">
-            <p>PAST BOOKINGS</p>
-            <table class="past-customer-bookings-details"></table>
-          </article>
-          <article class="current-customer-bookings">
-            <p>CURRENT BOOKINGS</p>
-            <table class="current-customer-bookings-details"></table>
-          </article>
-          <article class="upcoming-customer-bookings">
-            <p>UPCOMING BOOKINGS</p>
-            <table class="future-customer-bookings-details"></table>
-          </article>
+          <div class="manager-customer-booked-section">
+            <article class="past-customer-bookings">
+              <p>PAST BOOKINGS</p>
+              <table class="past-customer-bookings-details"></table>
+            </article>
+            <article class="current-customer-bookings">
+              <p>CURRENT BOOKINGS</p>
+              <table class="current-customer-bookings-details"></table>
+            </article>
+            <article class="upcoming-customer-bookings">
+              <p>UPCOMING BOOKINGS</p>
+              <table class="future-customer-bookings-details"></table>
+            </article>
+          </div>
+          <div class="manager-customers-booking-section">
+            <form class="time-to-book">
+              <label for="date">Select a date to book:</label>
+              <input type="date" id="manager-date" name="date" />
+              <label for="rooms" class="manager-rooms"
+                >Choose a Room type:
+              </label>
+              <select name="rooms" class="manager-rooms-selection">
+                <option value=""></option>
+                <option value="single room">Single Room</option>
+                <option value="suite">Suite</option>
+                <option value="junior suite">Jr. Suite</option>
+                <option value="residential suite">Residential Suite</option>
+              </select>
+            </form>
+            <div class="manager-available-rooms"></div>
+          </div>
         </div>
       </section>
       <section class="book-your-stay-section hidden">

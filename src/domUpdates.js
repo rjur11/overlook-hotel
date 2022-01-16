@@ -33,6 +33,14 @@ const currentCustomerBookingDetails = document.querySelector(
 const futureCustomerBookingDetails = document.querySelector(
   ".future-customer-bookings-details"
 );
+const managerCustomerBookingView = document.querySelector(
+  ".manager-customers-booking-section"
+);
+const managerDateInput = document.querySelector("#manager-date");
+const managerRoomInput = document.querySelector(".manager-rooms-selection");
+const managerAvailableRooms = document.querySelector(
+  ".manager-available-rooms"
+);
 
 // ~~~~~~~~~~~~~~~~~ HELPER FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
 
@@ -325,13 +333,6 @@ const createUserDropdownOptions = (users) => {
     });
 };
 
-const filterByCustomer = (users) => {
-  const selection = userDropdown.value;
-  console.log(selection);
-  const user = users.find((user) => user.id === selection);
-  console.log(user);
-};
-
 const renderManagerDashboard = (model) => {
   createUserDropdownOptions(model.users);
   renderAvailableRooms(calculateRoomsAvailable(model));
@@ -352,6 +353,65 @@ const renderManagerCustomer = (model) => {
     customer.getFutureBookings(),
     true
   );
+  makeManagerBooking(model);
+};
+
+const isFutureDate = (date) => {
+  const today = new Date(new Date().toDateString());
+  return new Date(date) > today;
+};
+
+const createManagerBookingTable = (rooms) => {
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  table.appendChild(thead);
+  thead.appendChild(
+    createTr(
+      [
+        "Room Number",
+        "Room Type",
+        "Bidet",
+        "Bed Size",
+        "Number of Beds",
+        "Cost Per Night",
+        "Book",
+      ],
+      "th"
+    )
+  );
+  managerAvailableRooms.appendChild(table);
+  const tbody = document.createElement("tbody");
+  table.appendChild(tbody);
+  rooms.forEach((room) => {
+    const tr = createTr([
+      room.number,
+      room.roomType,
+      room.bidet,
+      room.bedSize,
+      room.numBeds,
+      costToString(room.costPerNight),
+      "placeholder",
+    ]);
+    tbody.appendChild(tr);
+  });
+};
+
+const makeManagerBooking = (model) => {
+  managerAvailableRooms.innerHTML = "";
+  const date = model.selectedDate;
+  if (!date || !isFutureDate(date)) {
+    const p = document.createElement("p");
+    p.innerText = "Please select a future date.";
+    managerAvailableRooms.appendChild(p);
+    return;
+  }
+  const roomType = model.roomType;
+  const availableRooms = model.rooms.filter((room) => {
+    const isCorrectType = roomType === "" || room.roomType === roomType;
+    const isAvailable = roomIsAvailable(room, date, model.bookings);
+    return isCorrectType && isAvailable;
+  });
+  createManagerBookingTable(availableRooms);
 };
 
 // ~~~~~~~~~~~~~~~~~ DOM UPDATE FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
@@ -391,7 +451,7 @@ const domUpdates = {
   returnHome() {
     console.log("Did not define returnHome");
   },
-  showCustomer(userID) {
+  showCustomer(userID, selectedDate, roomType) {
     console.log("Did not define showCustomer");
   },
   deleteBooking(booking) {
@@ -416,10 +476,15 @@ const domUpdates = {
   },
 };
 
-submitButton.addEventListener("click", showRoomsListener);
-userDropdown.addEventListener("change", () => {
+const customerViewListener = () => {
   const value = userDropdown.value;
-  domUpdates.showCustomer(value);
-});
+  const date = managerDateInput.value || "";
+  const room = managerRoomInput.value;
+  domUpdates.showCustomer(value, convertDate(date), room);
+};
+submitButton.addEventListener("click", showRoomsListener);
+userDropdown.addEventListener("change", customerViewListener);
+managerDateInput.addEventListener("change", customerViewListener);
+managerRoomInput.addEventListener("change", customerViewListener);
 
 export default domUpdates;

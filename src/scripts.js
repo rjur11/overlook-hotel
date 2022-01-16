@@ -122,7 +122,8 @@ window.addEventListener("load", () => {
       model.state = "user";
       domUpdates.renderModel(model);
     };
-    domUpdates.showCustomer = (userID) => {
+    domUpdates.showCustomer = (userID, selectedDate, roomType) => {
+      console.log(userID, selectedDate, roomType);
       if (userID === "") {
         model.state = "manager";
         domUpdates.renderModel(model);
@@ -131,6 +132,8 @@ window.addEventListener("load", () => {
       const user = model.users.find((user) => user.id === parseInt(userID));
       model.selectedCustomer = user;
       model.state = "managerCustomer";
+      model.selectedDate = selectedDate;
+      model.roomType = roomType;
       domUpdates.renderModel(model);
     };
     domUpdates.deleteBooking = (booking) => {
