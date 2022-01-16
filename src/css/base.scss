@@ -30,6 +30,16 @@ h2 {
   padding: 10px;
 }
 
+.login-view {
+  @include flex(column, nowrap, normal, normal, center);
+  padding-bottom: 33%;
+}
+
+.login-user-element,
+.login-password-element {
+  padding: 5px;
+}
+
 .book-your-stay-section {
   @include flex(column, nowrap, normal, normal, center);
   border: lightblue 2px dashed;
