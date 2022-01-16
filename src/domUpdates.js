@@ -120,7 +120,7 @@ const createRoomCard = (room) => {
   const img = document.createElement("img");
   img.src = typeToImage(room.roomType);
   img.alt = `Image of ${room.roomType}`;
-  img.width = 100;
+  img.width = 200;
   div.appendChild(img);
   div.appendChild(
     createRoomDetails([

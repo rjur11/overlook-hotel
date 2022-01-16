@@ -11,7 +11,7 @@ nav {
 .logo {
   height: 50px;
   width: auto;
-  background: rgba(238, 238, 238, 0.8);
+  background: $tile-background;
 }
 
 body {
@@ -40,14 +40,19 @@ h2 {
   padding: 5px;
 }
 
-.book-your-stay-section {
-  @include flex(column, nowrap, normal, normal, center);
-  border: lightblue 2px dashed;
-  padding-bottom: 20px;
+.manager-dash-tiles {
+  @include flex(row, nowrap, normal, space-evenly, baseline);
 }
 
-// #quantity
-//   width: 30px;
+.manager-dash-tile {
+  background: $tile-background;
+  padding: 20px;
+}
+
+.book-your-stay-section {
+  @include flex(column, nowrap, normal, normal, center);
+  padding-bottom: 20px;
+}
 
 .rooms {
   padding-left: 50px;
@@ -61,7 +66,6 @@ h2 {
 .booking-details,
 .room-details {
   @include flex(row, nowrap, normal, space-evenly, baseline);
-  border: lightgray 2px dashed;
 }
 
 .past-bookings,
@@ -71,7 +75,7 @@ h2 {
     margin-top: 0;
   }
   @include flex(column, nowrap, normal, normal, center);
-  background: rgba(238, 238, 238, 0.8);
+  background: $tile-background;
   padding: 40px;
 }
 
@@ -93,7 +97,7 @@ td {
 
 .room-card {
   @include flex(column, nowrap, center, center, center);
-  border: black 2px solid;
+  background: $tile-background;
   padding: 10px;
 }
 

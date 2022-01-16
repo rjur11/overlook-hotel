@@ -38,9 +38,25 @@
         <button class="login-button">Sign In</button>
       </section>
       <section class="manager-dashboard hidden">
-        <div class="total-rooms-available"></div>
-        <div class="total-daily-revenue"></div>
-        <div class="percentage-occupied"></div>
+        <div class="user-dropdown">
+          <select name="users" class="user-selection">
+            Select a Customer to View Their Bookings:
+          </select>
+        </div>
+        <div class="manager-dash-tiles">
+          <div class="manager-dash-tile">
+            <h3>Available Rooms:</h3>
+            <div class="total-rooms-available"></div>
+          </div>
+          <div class="manager-dash-tile">
+            <h3>Today's Revenue:</h3>
+            <div class="total-daily-revenue"></div>
+          </div>
+          <div class="manager-dash-tile">
+            <h3>Percentage of Rooms Occupied Today:</h3>
+            <div class="percentage-occupied"></div>
+          </div>
+        </div>
       </section>
       <section class="book-your-stay-section hidden">
         <h2>Book Your Stay!</h2>
