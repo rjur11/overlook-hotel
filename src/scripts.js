@@ -7,6 +7,7 @@ import {
   fetchAllRooms,
   fetchAllBookings,
   addNewBooking,
+  deleteBooking,
 } from "./apiCalls.js";
 import Room from "./classes/Room.js";
 import Booking from "./classes/Booking.js";
@@ -130,6 +131,17 @@ window.addEventListener("load", () => {
       const user = model.users.find((user) => user.id === parseInt(userID));
       model.selectedCustomer = user;
       model.state = "managerCustomer";
+      domUpdates.renderModel(model);
+    };
+    domUpdates.deleteBooking = (booking) => {
+      deleteBooking(booking.id);
+      model.bookings = model.bookings.filter(
+        (currBooking) => currBooking !== booking
+      );
+      const user = model.users.find((user) => user.id === booking.userID);
+      user.bookings = user.bookings.filter(
+        (currBooking) => currBooking !== booking
+      );
       domUpdates.renderModel(model);
     };
     domUpdates.renderModel(model);
