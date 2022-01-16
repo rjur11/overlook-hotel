@@ -121,6 +121,17 @@ window.addEventListener("load", () => {
       model.state = "user";
       domUpdates.renderModel(model);
     };
+    domUpdates.showCustomer = (userID) => {
+      if (userID === "") {
+        model.state = "manager";
+        domUpdates.renderModel(model);
+        return;
+      }
+      const user = model.users.find((user) => user.id === parseInt(userID));
+      model.selectedCustomer = user;
+      model.state = "managerCustomer";
+      domUpdates.renderModel(model);
+    };
     domUpdates.renderModel(model);
   });
 });

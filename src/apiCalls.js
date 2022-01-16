@@ -49,3 +49,13 @@ export const addNewBooking = (userID, date, roomNumber) => {
     .then((response) => response.json())
     .catch((error) => console.log(error));
 };
+
+// ~~~~~~~~~~ DELETE REQUEST ~~~~~~~~~~~~~
+
+export const deleteBooking = (bookingID) => {
+  return fetch(url + "bookings/" + bookingID, {
+    method: "DELETE",
+  })
+    .then((response) => response.json())
+    .catch((error) => console.log(error));
+};

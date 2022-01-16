@@ -22,6 +22,17 @@ const totalRoomsAvailable = document.querySelector(".total-rooms-available");
 const totalRevenue = document.querySelector(".total-daily-revenue");
 const percentOccupied = document.querySelector(".percentage-occupied");
 const userDropdown = document.querySelector(".user-selection");
+const managerBookingView = document.querySelector(".manager-booking-view");
+const managerDashTiles = document.querySelector(".manager-dash-tiles");
+const pastCustomerBookingDetails = document.querySelector(
+  ".past-customer-bookings-details"
+);
+const currentCustomerBookingDetails = document.querySelector(
+  ".current-customer-bookings-details"
+);
+const futureCustomerBookingDetails = document.querySelector(
+  ".future-customer-bookings-details"
+);
 
 // ~~~~~~~~~~~~~~~~~ HELPER FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
 
@@ -60,28 +71,45 @@ const createTr = (columns, columnType = "td") => {
   return tr;
 };
 
-const createBookingRow = (booking) => {
-  return createTr([
+const createBookingRow = (booking, addDeleteColumn) => {
+  const tr = createTr([
     booking.date,
     booking.roomNumber,
     createDisplayRoomType(booking.room.roomType),
     costToString(booking.getCost()),
   ]);
+  if (addDeleteColumn) {
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "Delete Booking";
+    deleteButton.addEventListener("click", () => {
+      domUpdates.deleteBooking(booking);
+    });
+    tr.appendChild(deleteButton);
+  }
+  return tr;
 };
 
-const populateBookingRows = (table, bookings) => {
+const populateBookingRows = (table, bookings, addDeleteColumn = false) => {
   table.innerHTML = "";
   const thead = document.createElement("thead");
-  const header = createTr(
-    ["Date Booked", "Room Number", "Room Type", "Cost of Room"],
-    "th"
-  );
+  const headerCols = [
+    "Date Booked",
+    "Room Number",
+    "Room Type",
+    "Cost of Room",
+  ];
+  if (addDeleteColumn) {
+    headerCols.push("Delete Booking");
+  }
+  const header = createTr(headerCols, "th");
   thead.appendChild(header);
   table.appendChild(thead);
   const tbody = document.createElement("tbody");
-  bookings.map(createBookingRow).forEach((row) => {
-    tbody.appendChild(row);
-  });
+  bookings
+    .map((booking) => createBookingRow(booking, addDeleteColumn))
+    .forEach((row) => {
+      tbody.appendChild(row);
+    });
   tbody.appendChild(createCostRow(bookings));
   table.appendChild(tbody);
 };
@@ -272,6 +300,7 @@ const calculatePercentageOccupied = (model) => {
 };
 
 const createUserDropdownOptions = (users) => {
+  userDropdown.innerHTML = "";
   const option = document.createElement("option");
   option.innerText = "";
   option.value = "";
@@ -296,11 +325,33 @@ const createUserDropdownOptions = (users) => {
     });
 };
 
+const filterByCustomer = (users) => {
+  const selection = userDropdown.value;
+  console.log(selection);
+  const user = users.find((user) => user.id === selection);
+  console.log(user);
+};
+
 const renderManagerDashboard = (model) => {
   createUserDropdownOptions(model.users);
   renderAvailableRooms(calculateRoomsAvailable(model));
   totalRevenue.innerText = costToString(calculateRoomRevenue(model));
   percentOccupied.innerText = `${calculatePercentageOccupied(model)}%`;
+};
+
+const renderManagerCustomer = (model) => {
+  const customer = model.selectedCustomer;
+  console.log(customer);
+  populateBookingRows(pastCustomerBookingDetails, customer.getPastBookings());
+  populateBookingRows(
+    currentCustomerBookingDetails,
+    customer.getCurrentBookings()
+  );
+  populateBookingRows(
+    futureCustomerBookingDetails,
+    customer.getFutureBookings(),
+    true
+  );
 };
 
 // ~~~~~~~~~~~~~~~~~ DOM UPDATE FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
@@ -309,7 +360,8 @@ const viewsForState = {
   login: [loginView],
   user: [bookingsView, bookYourStaySection],
   rooms: [roomsView],
-  manager: [managerDashBoard],
+  manager: [managerDashBoard, managerDashTiles],
+  managerCustomer: [managerDashBoard, managerBookingView],
 };
 
 const showState = (state) => {
@@ -339,6 +391,12 @@ const domUpdates = {
   returnHome() {
     console.log("Did not define returnHome");
   },
+  showCustomer(userID) {
+    console.log("Did not define showCustomer");
+  },
+  deleteBooking(booking) {
+    console.log("Did not define deleteBooking");
+  },
   renderModel(model) {
     showState(model.state);
     if (model.state === "login") {
@@ -352,10 +410,16 @@ const domUpdates = {
       renderRooms(model);
     } else if (model.state === "manager") {
       renderManagerDashboard(model);
+    } else if (model.state === "managerCustomer") {
+      renderManagerCustomer(model);
     }
   },
 };
 
 submitButton.addEventListener("click", showRoomsListener);
+userDropdown.addEventListener("change", () => {
+  const value = userDropdown.value;
+  domUpdates.showCustomer(value);
+});
 
 export default domUpdates;

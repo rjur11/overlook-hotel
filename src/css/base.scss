@@ -40,13 +40,19 @@ h2 {
   padding: 5px;
 }
 
+.manager-dashboard {
+  @include flex(column, nowrap, normal, normal, normal);
+  flex: 1;
+}
+
 .user-dropdown {
-  position: relative;
-  left: 33%;
+  text-align: center;
   padding-bottom: 20px;
 }
+
 .manager-dash-tiles {
   @include flex(row, nowrap, normal, space-evenly, baseline);
+  flex: 1;
 }
 
 .manager-dash-tile {
@@ -64,8 +70,12 @@ h2 {
 }
 
 .bookings {
-  background: url(#{$background});
+  min-height: 100%;
+  background-image: url(#{$background});
   background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center center;
 }
 
 .booking-details,
@@ -108,4 +118,9 @@ td {
 
 .hidden {
   display: none;
+}
+
+.manager-booking-view {
+  max-height: 80vh;
+  overflow-y: scroll;
 }
