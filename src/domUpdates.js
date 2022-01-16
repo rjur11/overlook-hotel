@@ -184,17 +184,15 @@ const convertDate = (date) => {
 };
 
 const showRoomsListener = (event) => {
-  console.log("clicked");
   event.preventDefault();
-  console.log(dateInput.value, roomInput.value);
   if (dateInput.value && roomInput.value) {
     domUpdates.showRooms(convertDate(dateInput.value), roomInput.value);
   }
 };
 
 const renderRooms = (model) => {
-  const selectedDate = model.selectedBookingDate;
-  const selectedRoomType = model.selectedRoomType;
+  const selectedDate = model.attachments.selectedBookingDate;
+  const selectedRoomType = model.attachments.selectedRoomType;
   const bookings = model.bookings;
   const rooms = model.rooms;
   roomsView.innerHTML = "";
@@ -207,7 +205,7 @@ const renderRooms = (model) => {
     const h3 = document.createElement("h3");
     h3.innerText = `Sorry, no ${createDisplayRoomType(
       selectedRoomType
-    )} available at on ${model.selectedBookingDate}!`;
+    )} available at on ${model.attachments.selectedBookingDate}!`;
     roomsView.appendChild(h3);
     const homeButton = document.createElement("button");
     homeButton.innerText = "Return to Bookings Page";
@@ -343,8 +341,7 @@ const renderManagerDashboard = (model) => {
 };
 
 const renderManagerCustomer = (model) => {
-  const customer = model.selectedCustomer;
-  console.log(customer);
+  const customer = model.attachments.selectedCustomer;
   populateBookingRows(pastCustomerBookingDetails, customer.getPastBookings());
   populateBookingRows(
     currentCustomerBookingDetails,
@@ -405,14 +402,14 @@ const createManagerBookingTable = (rooms) => {
 
 const makeManagerBooking = (model) => {
   managerAvailableRooms.innerHTML = "";
-  const date = model.selectedDate;
+  const date = model.attachments.selectedDate;
   if (!date || !isFutureDate(date)) {
     const p = document.createElement("p");
     p.innerText = "Please select a future date.";
     managerAvailableRooms.appendChild(p);
     return;
   }
-  const roomType = model.roomType;
+  const roomType = model.attachments.roomType;
   const availableRooms = model.rooms.filter((room) => {
     const isCorrectType = roomType === "" || room.roomType === roomType;
     const isAvailable = roomIsAvailable(room, date, model.bookings);
@@ -470,9 +467,10 @@ const domUpdates = {
   renderModel(model) {
     showState(model.state);
     if (model.state === "login") {
-      if (model.loginError) {
+      loginError.classList.add("hidden");
+      if (model.attachments.loginError) {
         loginError.classList.remove("hidden");
-        loginError.innerText = model.loginError;
+        loginError.innerText = model.attachments.loginError;
       }
     } else if (model.state === "user") {
       renderBookings(model.user);
