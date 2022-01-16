@@ -7,6 +7,7 @@ import {
   fetchAllRooms,
   fetchAllBookings,
   addNewBooking,
+  deleteBooking,
 } from "./apiCalls.js";
 import Room from "./classes/Room.js";
 import Booking from "./classes/Booking.js";
@@ -120,6 +121,42 @@ window.addEventListener("load", () => {
     domUpdates.returnHome = () => {
       model.state = "user";
       domUpdates.renderModel(model);
+    };
+    domUpdates.showCustomer = (userID, selectedDate, roomType) => {
+      console.log(userID, selectedDate, roomType);
+      if (userID === "") {
+        model.state = "manager";
+        domUpdates.renderModel(model);
+        return;
+      }
+      const user = model.users.find((user) => user.id === parseInt(userID));
+      model.selectedCustomer = user;
+      model.state = "managerCustomer";
+      model.selectedDate = selectedDate;
+      model.roomType = roomType;
+      domUpdates.renderModel(model);
+    };
+    domUpdates.deleteBooking = (booking) => {
+      deleteBooking(booking.id);
+      model.bookings = model.bookings.filter(
+        (currBooking) => currBooking !== booking
+      );
+      const user = model.users.find((user) => user.id === booking.userID);
+      user.bookings = user.bookings.filter(
+        (currBooking) => currBooking !== booking
+      );
+      domUpdates.renderModel(model);
+    };
+    domUpdates.bookCustomerRoom = (room) => {
+      const userID = model.selectedCustomer.id;
+      const date = model.selectedDate;
+      const roomNumber = room.number;
+      addNewBooking(userID, date, roomNumber).then((data) => {
+        const newBooking = new Booking(data.newBooking, model.rooms);
+        model.bookings.push(newBooking);
+        model.selectedCustomer.bookings.push(newBooking);
+        domUpdates.renderModel(model);
+      });
     };
     domUpdates.renderModel(model);
   });

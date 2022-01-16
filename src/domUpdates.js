@@ -22,6 +22,25 @@ const totalRoomsAvailable = document.querySelector(".total-rooms-available");
 const totalRevenue = document.querySelector(".total-daily-revenue");
 const percentOccupied = document.querySelector(".percentage-occupied");
 const userDropdown = document.querySelector(".user-selection");
+const managerBookingView = document.querySelector(".manager-booking-view");
+const managerDashTiles = document.querySelector(".manager-dash-tiles");
+const pastCustomerBookingDetails = document.querySelector(
+  ".past-customer-bookings-details"
+);
+const currentCustomerBookingDetails = document.querySelector(
+  ".current-customer-bookings-details"
+);
+const futureCustomerBookingDetails = document.querySelector(
+  ".future-customer-bookings-details"
+);
+const managerCustomerBookingView = document.querySelector(
+  ".manager-customers-booking-section"
+);
+const managerDateInput = document.querySelector("#manager-date");
+const managerRoomInput = document.querySelector(".manager-rooms-selection");
+const managerAvailableRooms = document.querySelector(
+  ".manager-available-rooms"
+);
 
 // ~~~~~~~~~~~~~~~~~ HELPER FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
 
@@ -60,28 +79,47 @@ const createTr = (columns, columnType = "td") => {
   return tr;
 };
 
-const createBookingRow = (booking) => {
-  return createTr([
+const createBookingRow = (booking, addDeleteColumn) => {
+  const tr = createTr([
     booking.date,
     booking.roomNumber,
     createDisplayRoomType(booking.room.roomType),
     costToString(booking.getCost()),
   ]);
+  if (addDeleteColumn) {
+    const td = document.createElement("td");
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "Delete Booking";
+    deleteButton.addEventListener("click", () => {
+      domUpdates.deleteBooking(booking);
+    });
+    td.appendChild(deleteButton);
+    tr.appendChild(td);
+  }
+  return tr;
 };
 
-const populateBookingRows = (table, bookings) => {
+const populateBookingRows = (table, bookings, addDeleteColumn = false) => {
   table.innerHTML = "";
   const thead = document.createElement("thead");
-  const header = createTr(
-    ["Date Booked", "Room Number", "Room Type", "Cost of Room"],
-    "th"
-  );
+  const headerCols = [
+    "Date Booked",
+    "Room Number",
+    "Room Type",
+    "Cost of Room",
+  ];
+  if (addDeleteColumn) {
+    headerCols.push("Delete Booking");
+  }
+  const header = createTr(headerCols, "th");
   thead.appendChild(header);
   table.appendChild(thead);
   const tbody = document.createElement("tbody");
-  bookings.map(createBookingRow).forEach((row) => {
-    tbody.appendChild(row);
-  });
+  bookings
+    .map((booking) => createBookingRow(booking, addDeleteColumn))
+    .forEach((row) => {
+      tbody.appendChild(row);
+    });
   tbody.appendChild(createCostRow(bookings));
   table.appendChild(tbody);
 };
@@ -272,6 +310,7 @@ const calculatePercentageOccupied = (model) => {
 };
 
 const createUserDropdownOptions = (users) => {
+  userDropdown.innerHTML = "";
   const option = document.createElement("option");
   option.innerText = "";
   option.value = "";
@@ -303,13 +342,93 @@ const renderManagerDashboard = (model) => {
   percentOccupied.innerText = `${calculatePercentageOccupied(model)}%`;
 };
 
+const renderManagerCustomer = (model) => {
+  const customer = model.selectedCustomer;
+  console.log(customer);
+  populateBookingRows(pastCustomerBookingDetails, customer.getPastBookings());
+  populateBookingRows(
+    currentCustomerBookingDetails,
+    customer.getCurrentBookings()
+  );
+  populateBookingRows(
+    futureCustomerBookingDetails,
+    customer.getFutureBookings(),
+    true
+  );
+  makeManagerBooking(model);
+};
+
+const isFutureDate = (date) => {
+  const today = new Date(new Date().toDateString());
+  return new Date(date) > today;
+};
+
+const createManagerBookingTable = (rooms) => {
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  table.appendChild(thead);
+  thead.appendChild(
+    createTr(
+      [
+        "Room Number",
+        "Room Type",
+        "Bidet",
+        "Bed Size",
+        "Number of Beds",
+        "Cost Per Night",
+        "Book",
+      ],
+      "th"
+    )
+  );
+  managerAvailableRooms.appendChild(table);
+  const tbody = document.createElement("tbody");
+  table.appendChild(tbody);
+  rooms.forEach((room) => {
+    const tr = createTr([
+      room.number,
+      room.roomType,
+      room.bidet,
+      room.bedSize,
+      room.numBeds,
+      costToString(room.costPerNight),
+    ]);
+    const td = document.createElement("td");
+    tr.appendChild(td);
+    const button = document.createElement("button");
+    button.innerText = "Add Booking";
+    button.addEventListener("click", () => domUpdates.bookCustomerRoom(room));
+    td.appendChild(button);
+    tbody.appendChild(tr);
+  });
+};
+
+const makeManagerBooking = (model) => {
+  managerAvailableRooms.innerHTML = "";
+  const date = model.selectedDate;
+  if (!date || !isFutureDate(date)) {
+    const p = document.createElement("p");
+    p.innerText = "Please select a future date.";
+    managerAvailableRooms.appendChild(p);
+    return;
+  }
+  const roomType = model.roomType;
+  const availableRooms = model.rooms.filter((room) => {
+    const isCorrectType = roomType === "" || room.roomType === roomType;
+    const isAvailable = roomIsAvailable(room, date, model.bookings);
+    return isCorrectType && isAvailable;
+  });
+  createManagerBookingTable(availableRooms);
+};
+
 // ~~~~~~~~~~~~~~~~~ DOM UPDATE FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
 
 const viewsForState = {
   login: [loginView],
   user: [bookingsView, bookYourStaySection],
   rooms: [roomsView],
-  manager: [managerDashBoard],
+  manager: [managerDashBoard, managerDashTiles],
+  managerCustomer: [managerDashBoard, managerBookingView],
 };
 
 const showState = (state) => {
@@ -339,6 +458,15 @@ const domUpdates = {
   returnHome() {
     console.log("Did not define returnHome");
   },
+  showCustomer(userID, selectedDate, roomType) {
+    console.log("Did not define showCustomer");
+  },
+  deleteBooking(booking) {
+    console.log("Did not define deleteBooking");
+  },
+  bookCustomerRoom(room) {
+    console.log("Did not define bookCustomerRoom");
+  },
   renderModel(model) {
     showState(model.state);
     if (model.state === "login") {
@@ -352,10 +480,21 @@ const domUpdates = {
       renderRooms(model);
     } else if (model.state === "manager") {
       renderManagerDashboard(model);
+    } else if (model.state === "managerCustomer") {
+      renderManagerCustomer(model);
     }
   },
 };
 
+const customerViewListener = () => {
+  const value = userDropdown.value;
+  const date = managerDateInput.value || "";
+  const room = managerRoomInput.value;
+  domUpdates.showCustomer(value, convertDate(date), room);
+};
 submitButton.addEventListener("click", showRoomsListener);
+userDropdown.addEventListener("change", customerViewListener);
+managerDateInput.addEventListener("change", customerViewListener);
+managerRoomInput.addEventListener("change", customerViewListener);
 
 export default domUpdates;
