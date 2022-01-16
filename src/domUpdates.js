@@ -21,6 +21,7 @@ const managerDashBoard = document.querySelector(".manager-dashboard");
 const totalRoomsAvailable = document.querySelector(".total-rooms-available");
 const totalRevenue = document.querySelector(".total-daily-revenue");
 const percentOccupied = document.querySelector(".percentage-occupied");
+const userDropdown = document.querySelector(".user-selection");
 
 // ~~~~~~~~~~~~~~~~~ HELPER FUNCTIONS ~~~~~~~~~~~~~~~~~~~~
 
@@ -217,6 +218,7 @@ const findTodaysDate = () => {
 };
 
 const renderAvailableRooms = (availableRoomsObj) => {
+  totalRoomsAvailable.innerHTML = "";
   const table = document.createElement("table");
   const thead = document.createElement("thead");
   const header = createTr(["Room Type", "Number Available"], "th");
@@ -269,7 +271,33 @@ const calculatePercentageOccupied = (model) => {
   );
 };
 
+const createUserDropdownOptions = (users) => {
+  const option = document.createElement("option");
+  option.innerText = "";
+  option.value = "";
+  userDropdown.appendChild(option);
+  users
+    .sort((a, b) => {
+      a = a.name.split(" ")[1];
+      b = b.name.split(" ")[1];
+      if (a < b) {
+        return -1;
+      } else if (a > b) {
+        return 1;
+      } else {
+        return 0;
+      }
+    })
+    .forEach((user) => {
+      const option = document.createElement("option");
+      option.value = user.id;
+      option.innerText = user.name;
+      userDropdown.appendChild(option);
+    });
+};
+
 const renderManagerDashboard = (model) => {
+  createUserDropdownOptions(model.users);
   renderAvailableRooms(calculateRoomsAvailable(model));
   totalRevenue.innerText = costToString(calculateRoomRevenue(model));
   percentOccupied.innerText = `${calculatePercentageOccupied(model)}%`;
