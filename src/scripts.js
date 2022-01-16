@@ -147,6 +147,17 @@ window.addEventListener("load", () => {
       );
       domUpdates.renderModel(model);
     };
+    domUpdates.bookCustomerRoom = (room) => {
+      const userID = model.selectedCustomer.id;
+      const date = model.selectedDate;
+      const roomNumber = room.number;
+      addNewBooking(userID, date, roomNumber).then((data) => {
+        const newBooking = new Booking(data.newBooking, model.rooms);
+        model.bookings.push(newBooking);
+        model.selectedCustomer.bookings.push(newBooking);
+        domUpdates.renderModel(model);
+      });
+    };
     domUpdates.renderModel(model);
   });
 });

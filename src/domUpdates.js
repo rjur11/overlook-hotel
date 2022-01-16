@@ -87,12 +87,14 @@ const createBookingRow = (booking, addDeleteColumn) => {
     costToString(booking.getCost()),
   ]);
   if (addDeleteColumn) {
+    const td = document.createElement("td");
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "Delete Booking";
     deleteButton.addEventListener("click", () => {
       domUpdates.deleteBooking(booking);
     });
-    tr.appendChild(deleteButton);
+    td.appendChild(deleteButton);
+    tr.appendChild(td);
   }
   return tr;
 };
@@ -390,8 +392,13 @@ const createManagerBookingTable = (rooms) => {
       room.bedSize,
       room.numBeds,
       costToString(room.costPerNight),
-      "placeholder",
     ]);
+    const td = document.createElement("td");
+    tr.appendChild(td);
+    const button = document.createElement("button");
+    button.innerText = "Add Booking";
+    button.addEventListener("click", () => domUpdates.bookCustomerRoom(room));
+    td.appendChild(button);
     tbody.appendChild(tr);
   });
 };
@@ -456,6 +463,9 @@ const domUpdates = {
   },
   deleteBooking(booking) {
     console.log("Did not define deleteBooking");
+  },
+  bookCustomerRoom(room) {
+    console.log("Did not define bookCustomerRoom");
   },
   renderModel(model) {
     showState(model.state);
