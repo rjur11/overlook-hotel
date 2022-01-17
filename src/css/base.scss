@@ -2,6 +2,8 @@
 @import "_variables";
 @import "_mixins";
 
+// *************** Nav Bar Styling ************************
+
 nav {
   @include flex(row, nowrap, normal, space-between, normal);
   background: url(#{$nav-background});
@@ -13,6 +15,8 @@ nav {
   width: auto;
   background: $tile-background;
 }
+
+// *************** General Page Styling ******************
 
 body {
   @include flex(column, nowrap, normal, normal, normal);
@@ -30,6 +34,8 @@ h2 {
   padding: 10px;
 }
 
+// *************** Login Page Styling ******************
+
 .login-view {
   @include flex(column, nowrap, normal, normal, center);
   padding-bottom: 33%;
@@ -39,6 +45,8 @@ h2 {
 .login-password-element {
   padding: 5px;
 }
+
+// *************** Manager Dashboard Styling ******************
 
 .manager-dashboard {
   @include flex(column, nowrap, normal, normal, normal);
@@ -59,6 +67,36 @@ h2 {
   background: $tile-background;
   padding: 20px;
 }
+
+.manager-booking-view {
+  @include flex(row, nowrap, normal, normal, normal);
+}
+
+.time-to-book {
+  padding-bottom: 10px;
+}
+
+.manager-customer-booked-section {
+  @include flex(column, normal, normal, normal, normal);
+  max-height: 80vh;
+  overflow-y: scroll;
+  padding: 20px;
+  background: $tile-background;
+}
+
+.manager-customers-booking-section {
+  @include flex(column, normal, normal, normal, center);
+  padding-left: 100px;
+}
+
+.manager-available-rooms {
+  padding-top: 5px;
+  max-height: 80vh;
+  overflow-y: scroll;
+  background: $tile-background;
+}
+
+// *************** Customer Dashboard Styling ******************
 
 .book-your-stay-section {
   @include flex(column, nowrap, normal, normal, center);
@@ -91,7 +129,7 @@ h2 {
   }
   @include flex(column, nowrap, normal, normal, center);
   background: $tile-background;
-  padding: 40px;
+  padding: 20px;
 }
 
 table {
@@ -114,15 +152,6 @@ td {
   @include flex(column, nowrap, center, center, center);
   background: $tile-background;
   padding: 10px;
-}
-
-.manager-booking-view {
-  @include flex(row, nowrap, normal, normal, normal);
-}
-
-.manager-customer-booked-section {
-  max-height: 80vh;
-  overflow-y: scroll;
 }
 
 .hidden {
