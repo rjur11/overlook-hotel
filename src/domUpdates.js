@@ -384,7 +384,7 @@ const createManagerBookingTable = (rooms) => {
   rooms.forEach((room) => {
     const tr = createTr([
       room.number,
-      room.roomType,
+      createDisplayRoomType(room.roomType),
       room.bidet,
       room.bedSize,
       room.numBeds,
