@@ -6,6 +6,7 @@ const currentBookingsTable = document.querySelector(
 );
 const loginView = document.querySelector(".login-view");
 const logoutButton = document.querySelector(".logout");
+const userBookingHeader = document.querySelector(".user-booking-header");
 const userNameInput = document.querySelector("#username");
 const passwordInput = document.querySelector("#pass");
 const loginButton = document.querySelector(".login-button");
@@ -57,6 +58,7 @@ const costToString = (cost) => {
 // ~~~~~~~~~~~~~~~~~ BOOKING TABLES ~~~~~~~~~~~~~~~~~~~~
 
 const renderBookings = (user) => {
+  userBookingHeader.innerText = user.name;
   populateBookingRows(pastBookingsTable, user.getPastBookings());
   populateBookingRows(currentBookingsTable, user.getCurrentBookings());
   populateBookingRows(futureBookingsTable, user.getFutureBookings());
@@ -237,6 +239,7 @@ loginButton.addEventListener("click", loginListener);
 
 const logoutListener = (event) => {
   event.preventDefault();
+  userBookingHeader.innerText = "Friend";
   domUpdates.logout();
 };
 
