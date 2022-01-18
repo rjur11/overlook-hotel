@@ -64,6 +64,8 @@ After following these steps, you should have access to the fully functioning web
 
 ## See the Site in Action! 
 
+<img width="500" alt="Login Page" src="https://user-images.githubusercontent.com/69861203/149979514-0bcd2a96-608d-42ec-9166-252767bb2377.png">
+
 The login page is the first point of access to the website. A user can choose to log in using customer credentials, or manager credentials. 
 
 To log into the customer side, a user can log in using the following credentials: 
@@ -78,7 +80,6 @@ To log into the manager side:
 >
 >password: overlook2021
 
-<img width="500" alt="Login Page" src="https://user-images.githubusercontent.com/69861203/149979514-0bcd2a96-608d-42ec-9166-252767bb2377.png">
 
 Customer Side:
 
@@ -92,7 +93,7 @@ Manager Side:
 
 <img width="500" alt="Manager Landing Page" src="https://user-images.githubusercontent.com/69861203/149987599-8a1d1a00-b196-4310-8c6b-2bfcc2e34f6d.png">
 
-The manager portal is a bit more involved. After logging in, a manager can see some quick numbers associated with the total rooms available, revenue earned, and percentage of rooms occupied for today. The manager is able to select any guest from a drop down list in order to see their bookings.
+The manager portal is a bit more involved. After logging in, a manager can see some quick numbers associated with the total rooms available, revenue earned, and percentage of rooms occupied for today. The manager is able to select any customer from a drop down list in order to see their bookings.
 
 <img width="500" alt="Manager Dashboard" src="https://user-images.githubusercontent.com/69861203/149987807-46df2e46-6a75-4509-bb53-d421e9fdc8d4.png">
 
