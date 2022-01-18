@@ -42,7 +42,7 @@ To install this project, please see below:
 2. Run `npm install` to install library dependancies
 3. Next, run `npm start` and go to `http://localhost:8080/` to view the website
 4. To access the data this site is built upon, clone down the Overlook-api using `git clone` into another terminal window (keep the localhost above running)
-5. Run `install` and `npm start`
+5. Run `npm install` and `npm start`
 ```
 After following these steps, you should have access to the fully functioning website.
     
